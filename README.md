@@ -45,7 +45,7 @@ You may visit the following URIs in your browser's address bar to go to the exte
 
 ### **Step 3.** Activate Developer Mode.
 
-This is usually a toggle switch in the top right corner of the page. Activating developer mode will allow you to load unpacked extensions.
+Activating developer mode will allow you to load unpacked extensions.
 
 ### **Step 4.** Click "Load Unpacked" and select the folder where you extracted the repository.
 
@@ -62,6 +62,6 @@ The extension should automatically be enabled when you visit a class search page
 
 Click on the extension icon and click the big **Rate Everyone** button on the pop-up. You should immediately see the scores and the colours of the instructors' names change.
 
-You may also click on the "Search Reddit" button to open a new tab with the search results of the instructor's name in [r/RateUPProfs](htttps://reddit.com/r/RateUPProfs).
+You may also click on the "Search Reddit" button to open a new tab with the search results of the instructor's name in [r/RateUPProfs](https://reddit.com/r/RateUPProfs).
 
 Happy enlisting!
