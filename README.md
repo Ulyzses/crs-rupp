@@ -15,6 +15,7 @@ If you are a UPD student who finds this repository, feel free to use it at will.
 - You assume all the risks in using this extension; I will not be responsible for the consequences of any use or misuse of this extension.
 - The professors data found here is lifted from the old RUPP which was last updated years ago. As such, not everyone in the current roster of UPD intructors has a rating.
 - Any character development that the instructors have experienced throughout the last few years, whether positive or negative, may not be accurately represented in their scores. Given that, the display of the old RUPP scores should not be treated as the sole metric of an instructor's character.
+- If you find this useful, you may share this to other people privately, but **do not post this on public resources or forums** (e.g. Facebook, Twitter, Reddit) to avoid intervention from the UPD Admin.
 
 ## Compatibility
 - I cannot guarantee that this extension will work on your browser. It was developed and tested to be functional on the following browsers:
@@ -58,7 +59,7 @@ This would allow you to easily trigger the extension when searching for classes.
 
 # Usage
 
-The extension should automatically be enabled when you visit a class search page in CRS (`https://crs.upd.edu.ph/*/class_search/*`). If it's still disabled, try refreshing the page.
+The extension should automatically be enabled when you visit a class search page in CRS (URLs of the form `https://crs.upd.edu.ph/*/class_search/*`). If it's still disabled, try refreshing the page.
 
 Click on the extension icon and click the big **Rate Everyone** button on the pop-up. You should immediately see the scores and the colours of the instructors' names change.
 
