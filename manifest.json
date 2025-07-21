@@ -1,15 +1,13 @@
 {
     "name": "CRS-RUPP Integration",
-    "version": "2.0",
+    "version": "2.0.0.1",
     "manifest_version": 3,
     "description": "Helps with CRS enlistment by providing easy Reddit hyperlinks and RUPP integration.",
     "permissions": [
-        "activeTab",
         "storage"
     ],
     "host_permissions": [
-        "https://rupp-backend-vblj.onrender.com/api/rupp/*",
-        "https://crs.upd.edu.ph/*"
+        "https://rupp-backend-vblj.onrender.com/api/rupp/*"
     ],
     "background": {
         "service_worker": "background.js"
