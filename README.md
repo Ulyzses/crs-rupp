@@ -5,16 +5,23 @@ Pull requests for improvements appreciated :)
 
 ## Features
 
+### Class Search
 - Adds a new column displaying an instructor's RUPP scores (helpfulness, pedagogy, easiness, and overall)
     - Appends a hyperlink to the instructor's RUPP page
     - Colour codes the ratings based on their value
     - Displays how many ratings the instructor has received
+    - Missing instructors get a hyperlink to add a new instructor to RUPP
 - Appends a Search Reddit link below their name which leads to their [r/RateUPProfs](https://www.reddit.com/r/RateUPProfs/) search results
 - Includes support for multiple instructors in a block listing
 
-Sample of what it looks like, with instructor names and class codes redacted.
+![class-search-screenshot](images/screenshots/class-search.png)
 
-![screenshot](images/screenshot.png)
+### SET Answering
+- Adds a hyperlink in the Actions column to the instructor's rate page in RUPP
+    - Missing instructors get a hyperlink to add a new instructor to RUPP
+- Includes support for multiple instructors in a class
+
+![set-answer-screenshot](images/screenshots/set-answer.png)
 
 # Installation
 
