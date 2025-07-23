@@ -150,9 +150,11 @@ async function main(teachers) {
                 const { id, rating, count } = teacherInfo[name];
 
                 if (!id) {
-                    console.warn(`No RUPP ID found for teacher: ${name}`);
+                    console.info(`No RUPP ID found for teacher: ${name}`);
                     const noIdSpan = document.createElement('span');
-                    noIdSpan.innerHTML = `No entry for ${name}`;
+                    noIdSpan.innerHTML = `${name} not found in RUPP.
+                        <br><a href="https://rupp.onrender.com/add" target="_blank">Request to have them added</a>
+                    `;
                     return noIdSpan;
                 }
 
