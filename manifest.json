@@ -15,7 +15,8 @@
     "content_scripts": [
         {
             "matches": [
-                "https://crs.upd.edu.ph/*/class_search/*"
+                "https://crs.upd.edu.ph/*/class_search/*",
+                "https://crs.upd.edu.ph/set_answer"
             ],
             "js": [
                 "content.js"
