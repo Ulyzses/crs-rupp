@@ -12,6 +12,10 @@ const ruppTeacherUrl = (id) => {
     return `https://rupp-backend-vblj.onrender.com/api/rupp/teacher/${id}`;
 }
 
+const ruppRateUrl = (id) => {
+    return `https://rupp.onrender.com/rate/${id}`;
+}
+
 const starSpan = (title, rating) => {
     const roundedRating = Math.round(rating * 2) / 2; // Round to nearest half
     const fullStars = Math.floor(roundedRating);
@@ -42,7 +46,7 @@ function sendMessagePromise(message) {
     });
 }
 
-async function main(teachers) {
+async function classSearch(teachers) {
     const teacherInfo = {};
 
     // Update header rows' widths
@@ -212,6 +216,71 @@ async function main(teachers) {
         })
 }
 
+async function setAnswer(teachers) {
+    // The SET Answering page has two tables, one of which has the class `form`
+    // and the other is the one we want to process
+    const table = document.querySelector('table:not(.form)');
+
+    console.log(table);
+
+    const rows = [...table.querySelectorAll('tbody > tr')];
+
+    // In a single class row, there can be multiple instructors which live in
+    // different rows which are affected by the `rowspan` so we need to keep
+    // track how many rows are remaining to be processed for each class
+    let rowsRemaining = 0;
+    for (const row of rows) {
+        let instCell;
+        let actionCell;
+        
+        if (rowsRemaining === 0) { // New class row
+            const classCodeCell = row.querySelector('td');
+
+            if (!classCodeCell) continue; // Skip if no class code cell
+            rowsRemaining = Number(classCodeCell.rowSpan);
+
+            instCell = row.querySelector('td:nth-child(4)');
+            actionCell = row.querySelector('td:nth-child(5)');
+        } else {
+            instCell = row.querySelector('td:nth-child(1)');
+            actionCell = row.querySelector('td:nth-child(2)');
+        }
+
+        --rowsRemaining;
+
+        // The `Instructor(s)` column has the name and sometimes "(Required)"
+        const instRegex = /(.*?)(?= \(.*\))|^(.*)/;
+        const instName = instCell.innerHTML.match(instRegex)[1];
+        
+        const ruppTeacher = teachers.find(t => {
+            const fullName = `${t.lastName}, ${t.firstName}`.toLowerCase();
+            return fullName === instName.toLowerCase();
+        });
+
+        let link;
+        let actionText;
+
+        if (ruppTeacher) {
+            const teacherId = ruppTeacher._id;
+            link = ruppRateUrl(teacherId);
+            actionText = 'Rate on RUPP';
+        } else {
+            link = "https://rupp.onrender.com/add"
+            actionText = 'Request to add on RUPP';
+        }
+
+        actionCell.appendChild(document.createElement('br'));
+
+        const rateLink = document.createElement('a');
+
+        rateLink.href = link;
+        rateLink.target = '_blank';
+        rateLink.textContent = actionText;
+
+        actionCell.appendChild(rateLink);
+    }
+}
+
 chrome.runtime.sendMessage({ type: "FETCH_TEACHERS" }, (response) => {
     if (!response || !response.success) {
         console.error("Failed to fetch teachers data:", response ? response.error : "No response");
@@ -220,5 +289,15 @@ chrome.runtime.sendMessage({ type: "FETCH_TEACHERS" }, (response) => {
 
     const teachers = response.teachers;
 
-    main(teachers);
+    const url = window.location.href;
+
+    if (url.includes('/class_search/')) {
+        console.log("Content: Class Search");
+        classSearch(teachers);
+    } else if (url.includes('/set_answer')) {
+        console.log("Content: SET Answering");
+        setAnswer(teachers);
+    } else {
+        console.warn("Content: Unsupported page for RUPP integration.");
+    }
 });
