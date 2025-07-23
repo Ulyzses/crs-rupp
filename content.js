@@ -16,6 +16,8 @@ const ruppRateUrl = (id) => {
     return `https://rupp.onrender.com/rate/${id}`;
 }
 
+const ruppAddUrl = 'https://rupp.onrender.com/add';
+
 const starSpan = (title, rating) => {
     const roundedRating = Math.round(rating * 2) / 2; // Round to nearest half
     const fullStars = Math.floor(roundedRating);
@@ -157,7 +159,7 @@ async function classSearch(teachers) {
                     console.info(`No RUPP ID found for teacher: ${name}`);
                     const noIdSpan = document.createElement('span');
                     noIdSpan.innerHTML = `${name} not found in RUPP.
-                        <br><a href="https://rupp.onrender.com/add" target="_blank">Request to have them added</a>
+                        <br><a href="${ruppAddUrl}" target="_blank">Request to have them added</a>
                     `;
                     return noIdSpan;
                 }
@@ -264,8 +266,8 @@ async function setAnswer(teachers) {
             const teacherId = ruppTeacher._id;
             link = ruppRateUrl(teacherId);
             actionText = 'Rate on RUPP';
-        } else {
-            link = "https://rupp.onrender.com/add"
+        } else  {
+            link = ruppAddUrl;
             actionText = 'Request to add on RUPP';
         }
 
