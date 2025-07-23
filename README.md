@@ -14,7 +14,7 @@ Pull requests for improvements appreciated :)
 
 Sample of what it looks like, with instructor names and class codes redacted.
 
-![screenshot](images/screenshot.png)
+![screenshot](images/screenshots/screenshot.png)
 
 # Installation
 
