@@ -92,20 +92,20 @@ async function classSearch(teachers, preenlistmentModule = true) {
 
         // The `Class / Instructor` column has the subject in `strong` tags and
         // the instructor covered in the following `br` tags
-        const instRegex = /<br>(.*?)<br><br>/g;
+        const instRegex = /(<br>.*)?<br>(.*?)<br><br>/g;
         const instCell = currRow.querySelector('td:nth-child(2)');
 
         const insts = [...instCell.innerHTML.matchAll(instRegex)];
 
         const fetchPromises = insts.map(async (inst) => {
-            const [ elem, name ] = inst;
+            const [ elem, detail, name ] = inst;
 
             // NOTE: v1 had a check for 'Overall' here; verify if needed
             if (name.startsWith('<')) return;
 
             // Replace the instructor name with a span for easier reference
             instCell.innerHTML = instCell.innerHTML.replace(elem,
-                `<br><span class="instructor">${name}</span><br><br>`
+                `${detail}<br><span class="instructor">${name}</span><br><br>`
             );
 
             // Skip names that are not relevant or are placeholders
@@ -155,13 +155,13 @@ async function classSearch(teachers, preenlistmentModule = true) {
 
         const ratings = insts
             // Filter out any instructors that do not have RUPP data
-            .filter(inst => teacherInfo[inst[1]])
+            .filter(inst => teacherInfo[inst[2]])
 
             // Create the rating span for each instructor in the row
             // Normally, there is only one instructor per row, but some rows
             // may have multiple instructors (e.g. block schedules)
             .map(inst => {
-                const name = inst[1];
+                const name = inst[2];
                 const { id, rating, count } = teacherInfo[name];
 
                 if (!id) {
