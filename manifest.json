@@ -1,6 +1,6 @@
 {
     "name": "CRS-RUPP Integration",
-    "version": "2.1.0.0",
+    "version": "2.1.1.0",
     "manifest_version": 3,
     "description": "Helps with CRS enlistment by providing easy Reddit hyperlinks and RUPP integration.",
     "permissions": [

@@ -48,21 +48,30 @@ function sendMessagePromise(message) {
     });
 }
 
-async function classSearch(teachers) {
+async function classSearch(teachers, preenlistmentModule = true) {
     const teacherInfo = {};
 
     // Update header rows' widths
     // element.width is deprecated, but CRS uses it so we will too
     const headerRow = document.querySelector('#tbl-search > thead > tr');
 
+    // First four columns are the same for either module
     headerRow.querySelector('th:nth-child(1)').width = '3%';  // Class Code
     headerRow.querySelector('th:nth-child(2)').width = '20%'; // Class / Instructor
     headerRow.querySelector('th:nth-child(3)').width = '3%';  // Credits
     headerRow.querySelector('th:nth-child(4)').width = '15%'; // Schedule / Room
-    headerRow.querySelector('th:nth-child(5)').width = '15%'; // Restrictions / Remarks
-    headerRow.querySelector('th:nth-child(6)').width = '15%'; // Slots
-    headerRow.querySelector('th:nth-child(7)').width = '9%';  // Action
 
+    if (preenlistmentModule) {
+        headerRow.querySelector('th:nth-child(5)').width = '15%'; // Restrictions / Remarks
+        headerRow.querySelector('th:nth-child(6)').width = '15%'; // Slots
+        headerRow.querySelector('th:nth-child(7)').width = '9%';  // Action
+    } else {
+        headerRow.querySelector('th:nth-child(5)').width = '8%';  // Waitlisting Schedule
+        headerRow.querySelector('th:nth-child(6)').width = '15%'; // Restriction / Remarks
+        headerRow.querySelector('th:nth-child(7)').width = '9%';  // Available Slots / Total Slots | Demand
+        headerRow.querySelector('th:nth-child(8)').width = '7%';  // Action
+    }
+    
     const headerCell = document.createElement('th');
     headerCell.innerHTML = 'RUPP Rating';
     headerCell.width = '20%'; // Set width for the new column
@@ -83,20 +92,20 @@ async function classSearch(teachers) {
 
         // The `Class / Instructor` column has the subject in `strong` tags and
         // the instructor covered in the following `br` tags
-        const instRegex = /<br>(.*?)<br><br>/g;
+        const instRegex = /(<br>.*)?<br>(.*?)<br><br>/g;
         const instCell = currRow.querySelector('td:nth-child(2)');
 
         const insts = [...instCell.innerHTML.matchAll(instRegex)];
 
         const fetchPromises = insts.map(async (inst) => {
-            const [ elem, name ] = inst;
+            const [ elem, detail, name ] = inst;
 
             // NOTE: v1 had a check for 'Overall' here; verify if needed
             if (name.startsWith('<')) return;
 
             // Replace the instructor name with a span for easier reference
             instCell.innerHTML = instCell.innerHTML.replace(elem,
-                `<br><span class="instructor">${name}</span><br><br>`
+                `${detail}<br><span class="instructor">${name}</span><br><br>`
             );
 
             // Skip names that are not relevant or are placeholders
@@ -146,13 +155,13 @@ async function classSearch(teachers) {
 
         const ratings = insts
             // Filter out any instructors that do not have RUPP data
-            .filter(inst => teacherInfo[inst[1]])
+            .filter(inst => teacherInfo[inst[2]])
 
             // Create the rating span for each instructor in the row
             // Normally, there is only one instructor per row, but some rows
             // may have multiple instructors (e.g. block schedules)
             .map(inst => {
-                const name = inst[1];
+                const name = inst[2];
                 const { id, rating, count } = teacherInfo[name];
 
                 if (!id) {
@@ -295,7 +304,10 @@ chrome.runtime.sendMessage({ type: "FETCH_TEACHERS" }, (response) => {
 
     if (url.includes('/class_search/')) {
         console.log("Content: Class Search");
-        classSearch(teachers);
+
+        const preenlistmentModule = url.includes('/preenlistment/');
+
+        classSearch(teachers, preenlistmentModule);
     } else if (url.includes('/set_answer')) {
         console.log("Content: SET Answering");
         setAnswer(teachers);
